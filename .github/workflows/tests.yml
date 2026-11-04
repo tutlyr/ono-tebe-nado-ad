@@ -3,25 +3,20 @@ name: Tests
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '**'
+    tags:
+      - '**'
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check if the repository is private
+        run: exit 1
+        if: ${{github.event.repository.private}}
+      - name: Tests
+        uses: Yandex-Practicum/test-project-action@v1
         with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+          project: 'ono-tebe-nado-ad'
